@@ -19,14 +19,10 @@ target_link_libraries( libMorphing ${EXTRA_LIBS} ${Commons})
 string(TIMESTAMP COMPIL "%Y-%m-%d %H:%M:%S")
 add_definitions(-DCOMPIL=" ${COMPIL}")
 
-#project(morphing)
 add_executable(        morphing src/main.c)
 target_link_libraries( morphing libMorphing ${Commons})
 
-
-#install(               TARGETS libMorphing LIBRARY DESTINATION "/usr/local/lib/")
-#install(               FILES   ${headers} DESTINATION "/usr/local/include/morphing/")
-#set_property(          TARGET  libMorphing PROPERTY INSTALL_RPATH_USE_LINK_PATH TRUE)
-#set_property(          TARGET  libMorphing PROPERTY OUTPUT_NAME Morphing)
-#install(               TARGETS morphing RUNTIME  DESTINATION "/usr/local/bin/")
-#set_property( TARGET morphing PROPERTY INSTALL_RPATH_USE_LINK_PATH TRUE)
+install(               TARGETS  libMorphing LIBRARY DESTINATION "lib")
+install(               FILES    ${headers} DESTINATION "include")
+install(               TARGETS  morphing RUNTIME  DESTINATION "bin")
+set_target_properties( morphing PROPERTIES INSTALL_RPATH "/usr/local/lib")
