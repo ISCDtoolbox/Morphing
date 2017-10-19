@@ -1,4 +1,4 @@
-# Shape Morphing
+# Shape Morphing [![Build Status](https://travis-ci.org/loicNorgeot/Morphing.svg?branch=master)](https://travis-ci.org/loicNorgeot/Morphing)
 
 This repository contains the code morphing for deforming a template mesh onto a target shape associated to the journal article
 http://www.sciencedirect.com/science/article/pii/S1631073X16300802.
