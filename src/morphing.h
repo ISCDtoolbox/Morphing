@@ -17,7 +17,7 @@
 #include "sparse.h"
 
 #define LS_VER   "2.0a"
-#define LS_REL   "March, 2017"
+#define LS_REL   "Oct, 2017"
 #define LS_CPY   "Copyright (c) ISCD "
 #define LS_STR   "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 
@@ -56,7 +56,7 @@
 #define MESH_BREF 99
 
 #define DEFAULT_NIT 400; // default iterations number
-#define DEFAULT_TOL 1e-3; // default error allowed 
+#define DEFAULT_TOL 1e-3; // default error allowed
 
 
 enum {None=0, Dirichlet, Load};
@@ -111,7 +111,7 @@ typedef struct {
     int      *adja,*tab;
     char     *name,cltyp;
     double   min[3],max[3],delta;
-    
+
     pCl      cl;
     pMat     mat;
     pPoint   point;
@@ -126,10 +126,10 @@ typedef struct {
     int      dim,ver,np,nit,iter,size[2],nmat,nbcl;
     double  *u,*p,*d,err,*valp1;
     char    *name,cltyp;
-    
+
     pMat     mat;
     pCl      cl;
-    
+
 } Sol;
 typedef Sol * pSol;
 

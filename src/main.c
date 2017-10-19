@@ -1,7 +1,5 @@
 #include "morphing.h"
-#include "compil.date"
 #define BUCKSIZ 64
-
 
 Info info;
 
@@ -28,32 +26,32 @@ static void excfun(int sigid) {
 
 static void usage(char *prog) {
     fprintf(stdout,"\n usage: %s [opts..] target[.mesh] template[.mesh]\n",prog);
-    
+
     fprintf(stdout,"\n** Generic options :\n");
     fprintf(stdout,"-h       Print this message\n");
-  
+
     fprintf(stdout,"\n** Parameters\n");
     fprintf(stdout,"-dref   nref [refs...]   reference of the Dirichlet boundary ( default 1 %d ) \n",MESH_DREF);
     fprintf(stdout,"-elref  nref [refs...]   reference of the Dirichlet elements ( default 1 %d ) \n",MESH_ELREF);
     fprintf(stdout,"-bref   nref [refs...]   reference of the surface to not be clamped or subjected to loads ( default 1 %d ) \n",MESH_BREF);
     fprintf(stdout,"-nit    n                iterations (default %d) \n",info.nit);
     fprintf(stdout,"-tol    epsilon          tolerance (default %E) \n",info.tol);
-  
+
     exit(1);
 }
 
 static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0) {
   int i, k;
-  
+
   i = 1;
   while ( i < argc ) {
     if ( *argv[i] == '-' ) {
       switch(argv[i][1]) {
-          
+
         case 'h':
           usage(argv[0]);
           break;
-          
+
         case 'd':
           if ( !strcmp(argv[i],"-dref") ) {
             ++i;
@@ -68,7 +66,7 @@ static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0
             }
           }
           break;
-          
+
         case 'e':
           if ( !strcmp(argv[i],"-elref") ) {
             ++i;
@@ -83,7 +81,7 @@ static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0
             }
           }
           break;
-          
+
         case 'b':
           if ( !strcmp(argv[i],"-bref") ) {
             ++i;
@@ -98,7 +96,7 @@ static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0
             }
           }
           break;
-          
+
         case 'n':
           if ( !strcmp(argv[i],"-nit") ) {
             ++i;
@@ -108,7 +106,7 @@ static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0
               --i;
           }
           break;
-          
+
         case 't':
           if ( !strcmp(argv[i],"-tol") ) {
             ++i;
@@ -118,7 +116,7 @@ static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0
               --i;
           }
           break;
-        
+
         default:
           fprintf(stderr,"  Unrecognized option %s\n",argv[i]);
           usage(argv[0]);
@@ -138,21 +136,21 @@ static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0
     }
     i++;
   }
-  
+
   /* check params */
-  
+
   if ( mesh_distance->name == NULL ) {
     fprintf(stdout,"  -- MESH DISTANCE BASENAME ?\n");
     fflush(stdin);
     fscanf(stdin,"%s",mesh_distance->name);
   }
-  
+
   if ( mesh_omega0->name == NULL ) {
     fprintf(stdout,"  -- MESH OMEGA 0 BASENAME ?\n");
     fflush(stdin);
     fscanf(stdin,"%s",mesh_omega0->name);
   }
-  
+
   return 1;
 }
 
@@ -182,7 +180,7 @@ static void setfunc(int dim) {
 FILE *out;
 
 int main(int argc, char **argv) {
-  
+
     Instance instance;
     int      ier;
     char     stim[32];
@@ -190,9 +188,9 @@ int main(int argc, char **argv) {
     fprintf(stdout,"  -- ELASTIC MORPHING, Release %s (%s) \n",LS_VER,LS_REL);
     fprintf(stdout,"     %s\n",LS_CPY);
     fprintf(stdout,"    %s\n",COMPIL);
-  
+
     out = fopen("funct.data","a+");
-    
+
     /* trap exceptions */
     signal(SIGABRT,excfun);
     signal(SIGFPE,excfun);
@@ -201,16 +199,16 @@ int main(int argc, char **argv) {
     signal(SIGTERM,excfun);
     signal(SIGINT,excfun);
     signal(SIGBUS,excfun);
-    
+
     /* default values */
-  
+
     memset(&instance.mesh_omega0,0,sizeof(Mesh));
     memset(&instance.mesh_distance,0,sizeof(Mesh));
     memset(&instance.sol_distance,0,sizeof(Sol));
     memset(&instance.sol_omega0,0,sizeof(Sol));
-    
+
     info.imprim = -99;
-  
+
     /* set default parameters */
     instance.mesh_omega0.nref1 = 1;
     instance.mesh_omega0.nref2 = 1;
@@ -220,10 +218,10 @@ int main(int argc, char **argv) {
     instance.mesh_omega0.ref3[0] = MESH_BREF;
     info.nit = DEFAULT_NIT;
     info.tol = DEFAULT_TOL;
-  
+
     /* command line */
     if ( !parsar(argc, argv, &instance.mesh_distance, &instance.mesh_omega0) )  return 1;
-    
+
     /* load data */
     if ( info.imprim )   fprintf(stdout,"\n  -- INPUT DATA\n");
     /* load meshes */
@@ -260,9 +258,9 @@ int main(int argc, char **argv) {
     assert(instance.sol_omega0.p);
     instance.sol_omega0.d   = (double*)calloc(instance.sol_omega0.np,sizeof(double));
     assert(instance.sol_omega0.d);
-  
+
     fprintf(stdout,"  -- DATA READING COMPLETED. \n");
-  
+
     fprintf(stdout,"\n  %s\n   MODULE MORPHING : %s (%s)\n  %s\n",LS_STR,LS_VER,LS_REL,LS_STR);
     if ( info.imprim )   fprintf(stdout,"  -- PHASE 1 : INITIALIZATION \n");
     /* create bucket data */
@@ -270,12 +268,12 @@ int main(int argc, char **argv) {
     tmpBucket = newBucket(&instance.mesh_distance,BUCKSIZ);
     instance.bucket = *tmpBucket;
     if ( info.imprim ) fprintf(stdout,"  -- PHASE 1 COMPLETED. \n\n");
-  
+
     /* minimization */
     if ( info.imprim ) fprintf(stdout,"  -- PHASE 2 : MINIMIZATION  \n \n");
     if ( !minimization(&instance) )  return 1;
     if ( info.imprim ) fprintf(stdout,"  -- PHASE 2 COMPLETED.     %s\n",stim);
-    
+
     /* free mem */
     free(instance.mesh_omega0.tetra);
     free(instance.mesh_omega0.point);
@@ -298,8 +296,7 @@ int main(int argc, char **argv) {
     free(tmpBucket);
 
     fprintf(stdout,"\n \n   END OF MODULE MORPHING.\n \n");
-    
-  
+
+
     return 0;
 }
-
