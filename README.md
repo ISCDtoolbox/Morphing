@@ -24,13 +24,23 @@ In a terminal, run:
 morphing [-h] [-nit n] [-dref nref [refs]] [-bref nref [refs]] [-elref nref [refs]] target_file[.mesh] template_file[.mesh]  
 ```
 
-Together with the target_file[.mesh] a scalar field target_file.sol should be provided.
+The different parameters correspond to:
+* **dref**  : fixed surfaces , *inside* the mesh to be deformed.
+* **bref**  : "follower" elements on the exterior surface, which must not be morphed (ears for instance)
+* **elref** : tetrahedral elements inside the fixed surfaces
+
+Together with the target_file[.mesh] a scalar field target_file.sol should be provided, corresponding to the signed distance function.
 
 Please run:
 ```
 morphing -h
-``` 
+```
 to see the default parameters.
+
+For the examples provided in the demo/ folder, the correct command to use would be:
+```
+morphing -h
+```
 
 
 ### Authors and contributors
