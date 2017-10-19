@@ -39,7 +39,7 @@ to see the default parameters.
 
 For the examples provided in the demo/ folder, the correct command to use would be:
 ```
-morphing -h
+morphing -dref 1 2 -elref 1 1 -bref 1 1 target.mesh template.mesh
 ```
 
 
