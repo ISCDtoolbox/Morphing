@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_BUILD_TYPE  "Release")
-set(CMAKE_C_FLAGS   "-w -O3")
+set(CMAKE_C_FLAGS   "-w -g -O3")
 set(CMAKE_MACOSX_RPATH 1)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
