@@ -1,5 +1,6 @@
 #include "morphing.h"
-#define BUCKSIZ 64
+#define BUCKSIZ 64 //BUCKSIZ defines the discretization of cube/square [0,1[^dim
+                   // in BUCKSIZ^dim points (Warning: mesh must be in [0,1[^dim)
 
 Info info;
 

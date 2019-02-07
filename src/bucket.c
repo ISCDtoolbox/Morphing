@@ -12,7 +12,9 @@ pBucket newBucket_3d(pMesh mesh,int nmax) {
     bucket = (Bucket*)malloc(sizeof(Bucket));
     assert(bucket);
     bucket->size = nmax;
-    bucket->head = (int*)calloc(nmax*nmax*nmax+1,sizeof(int));
+
+    // Doubled allowed size to avoid overflow if testing points out of ]0,1[^dim
+    bucket->head = (int*)calloc(8*nmax*nmax*nmax+1,sizeof(int));
     assert(bucket->head);
     bucket->link = (int*)calloc(mesh->np+1,sizeof(int));
     assert(bucket->link);
@@ -50,7 +52,9 @@ pBucket newBucket_2d(pMesh mesh,int nmax) {
     bucket = (Bucket*)malloc(sizeof(Bucket));
     assert(bucket);
     bucket->size = nmax;
-    bucket->head = (int*)calloc(nmax*nmax+1,sizeof(int));
+
+    // Doubled allowed size to avoid overflow if testing points out of ]0,1[^dim
+    bucket->head = (int*)calloc(4*nmax*nmax+1,sizeof(int));
     assert(bucket->head);
     bucket->link = (int*)calloc(mesh->np+1,sizeof(int));
     assert(bucket->link);
@@ -86,6 +90,16 @@ int buckin_3d(pMesh mesh,pBucket bucket,double *c) {
     jj = LS_MAX(0,(int)(dd * c[1])-1);
     kk = LS_MAX(0,(int)(dd * c[2])-1);
     ic = (kk*siz + jj)*siz + ii;
+
+    // Add a security warning: if it appears, everflow can happen when testing
+    // points (meaning there are out of cube ]0,2[^3 should not happen)
+    if (ic>8*siz*siz*siz)
+    {
+        fprintf(stderr,"\nWarning: point c=(%lf,%lf,%lf) ",c[0],c[1],c[2]);
+        fprintf(stderr,"out of range ]0,1[^3\n");
+        fprintf(stderr,"You should not pass here or very very rarely.\n");
+        return (0);
+    }
     
     /* check current cell */
     if ( bucket->head[ic] ) {
@@ -152,6 +166,16 @@ int buckin_2d(pMesh mesh,pBucket bucket,double *c) {
     ii = LS_MAX(0,(int)(dd * c[0])-1);
     jj = LS_MAX(0,(int)(dd * c[1])-1);
     ic = jj*siz + ii;
+
+    // Add a security warning: if it appears, everflow can happen when testing
+    // points (meaning there are out of square ]0,2[^2 should not happen)
+    if (ic>4*siz*siz)
+    {
+        fprintf(stderr,"\nWarning: point c=(%lf,%lf) ",c[0],c[1]);
+        fprintf(stderr,"out of range ]0,1[^2\n");
+        fprintf(stderr,"You should not pass here or very very rarely.\n");
+        return (0);
+    }
     
     /* check current cell */
     if ( bucket->head[ic] ) {
