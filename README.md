@@ -5,6 +5,10 @@ http://www.sciencedirect.com/science/article/pii/S1631073X16300802.
 
 ### Installation
 
+Before installing this repository, you have to install the Commons library.
+
+https://github.com/ISCDtoolbox/Commons
+
 You can grab the sources by cloning this repository or downloading a .zip archive of the sources. In order to build the project, navigate to the created directory and in a command prompt type:
 
 ```
