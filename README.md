@@ -18,7 +18,11 @@ cmake ..
 make
 (sudo) make install
 ```
+### Troubleshooting 
 
+Starting from gcc v.10, multiple definition of the same variable, coming from the include of header file at multiples location results in a linked error. In previous GCC versions this error is ignored. To solve this issue, the flag -fcommon needs to be specified while compiling using gcc.
+
+If you intend to use gcc version > 10.0, use -fcommon as a flag in the CMakeList.txt file - at the end of the cmake file. If you are using older version, or other compiler, this flag can be safely removed in this file.
 
 ### Usage
 
