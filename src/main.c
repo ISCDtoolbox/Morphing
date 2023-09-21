@@ -53,6 +53,16 @@ static int parsar(int argc, char *argv[], pMesh mesh_distance, pMesh mesh_omega0
           usage(argv[0]);
           break;
 
+        case 's':
+          if ( !strcmp(argv[i],"-save") ) {
+            ++i;
+            if ( i < argc && isdigit(argv[i][0]) )
+              info.save_it = atoi(argv[i]);
+            else
+              --i;
+          }
+          break;        
+
         case 'd':
           if ( !strcmp(argv[i],"-dref") ) {
             ++i;
@@ -219,6 +229,7 @@ int main(int argc, char **argv) {
     instance.mesh_omega0.ref3[0] = MESH_BREF;
     info.nit = DEFAULT_NIT;
     info.tol = DEFAULT_TOL;
+    info.save_it = DEFAULT_SAVE;
 
     /* command line */
     if ( !parsar(argc, argv, &instance.mesh_distance, &instance.mesh_omega0) )  return 1;

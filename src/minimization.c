@@ -73,12 +73,14 @@ int minimization(pInstance instance){
     /* advect mesh */
     if ( !moveMesh(&instance->mesh_omega0,&instance->sol_omega0,step) )  return 0;
 
-    /*
-    if(k%20==0) { step = 1e7;
-      if(instance->mesh_omega0.dim==3) tol=errL2_3d(instance);
-      else tol=errL2_3d(instance);
+    
+    if(k%info.save_it==0) {
+      fprintf(stdout," \n Writing intermediate data files .. \n");
+      if ( !saveMesh(&instance->mesh_omega0, &instance->mesh_distance,k) )  return 0;
+      if ( !saveDistance(&instance->sol_omega0, &instance->mesh_omega0, &instance->mesh_distance,k))  return 0;
+      if ( !saveSol(&instance->sol_omega0, &instance->mesh_omega0, &instance->mesh_distance, k) )  return 0;      
     }
-    */
+    
     k++;
 
   }

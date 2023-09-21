@@ -57,6 +57,7 @@
 
 #define DEFAULT_NIT 400; // default iterations number
 #define DEFAULT_TOL 1e-3; // default error allowed
+#define DEFAULT_SAVE 10; // default intermediate step for saving
 
 
 enum {None=0, Dirichlet, Load};
@@ -87,7 +88,7 @@ typedef Tetra * pTetra;
 
 typedef struct {
     double   delta,err,gr[3],tol;
-    int      ncpu,nit;
+    int      ncpu,nit,save_it;
     char     imprim,typ,cg,rhs;
    ;
 } Info;
